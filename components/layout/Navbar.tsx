@@ -1,8 +1,8 @@
-
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { Instagram } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-4">
             <Link 
               href="/" 
               className="text-lg font-bold font-sans text-gray-800 hover:text-[#3B9FD8] transition-colors relative group"
@@ -34,6 +34,15 @@ export default function Navbar() {
               Home
               <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#FDB927] group-hover:w-full transition-all duration-300"></span>
             </Link>
+            <a
+              href="https://instagram.com/gameloop_academy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-3 bg-[#3B9FD8] text-white font-bold text-base rounded-full shadow-[0_4px_0_0_#000] hover:shadow-[0_2px_0_0_#000] active:shadow-[0_1px_0_0_#000] transition-all duration-150 hover:translate-y-1 active:translate-y-2 border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)] flex items-center gap-2"
+            >
+              <Instagram className="w-5 h-5" strokeWidth={2.5} />
+              Follow
+            </a>
             <Link 
               href="/schedule" 
               className="px-6 py-3 bg-[#FDB927] text-black font-bold text-base rounded-full shadow-[0_4px_0_0_#000] hover:shadow-[0_2px_0_0_#000] active:shadow-[0_1px_0_0_#000] transition-all duration-150 hover:translate-y-1 active:translate-y-2 border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)]"
@@ -66,6 +75,16 @@ export default function Navbar() {
             >
               Home
             </Link>
+            <a
+              href="https://instagram.com/gameloop_academy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 bg-[#3B9FD8] text-white font-bold text-base rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)] text-center flex items-center justify-center gap-2"
+              onClick={() => setIsOpen(false)}
+            >
+              <Instagram className="w-5 h-5" strokeWidth={2.5} />
+              Follow on Instagram
+            </a>
             <Link
               href="/schedule"
               className="px-6 py-3 bg-[#FDB927] text-black font-bold text-base rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)] text-center"

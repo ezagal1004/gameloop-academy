@@ -209,7 +209,7 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
                                 </button>
 
                                 <p className="text-xs text-gray-600 text-center font-sans">
-                                    You'll receive payment and Zoom details via email within 24 hours
+                                    You'll receive payment and Google Meet details via email within 24 hours
                                 </p>
                             </form>
                         </>
@@ -240,7 +240,7 @@ export default function SignupModal({ isOpen, onClose }: SignupModalProps) {
                                 </p>
                                 <ul className="text-black font-sans text-sm mt-2 space-y-1 list-disc list-inside">
                                     <li>PayPal payment link ($25)</li>
-                                    <li>Zoom meeting link</li>
+                                    <li>Google Meet link</li>
                                     <li>Pre-class instructions</li>
                                 </ul>
                             </div>

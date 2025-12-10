@@ -39,7 +39,7 @@ export default function SchedulePage() {
       {/* Classes Grid */}
       <section className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
+
           {/* Active Class - Space Invaders */}
           <div
             className="relative bg-white border-4 border-black rounded-2xl p-6 shadow-[12px_12px_0_0_#000] hover:shadow-[16px_16px_0_0_#000] hover:-translate-x-1 hover:-translate-y-1 transition-all duration-200 animate-[wiggle_3s_ease-in-out_infinite]"
@@ -200,7 +200,16 @@ export default function SchedulePage() {
               New game-building classes added every month!
             </p>
             <p className="text-gray-600 font-sans text-sm">
-              Follow us on social media or check back here for the latest schedule
+              Follow us on Instagram{' '}
+              <a
+                href="https://instagram.com/gameloop_academy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-[#3B9FD8] hover:underline"
+              >
+                @gameloop_academy
+              </a>
+              {' '}or check back here for the latest schedule
             </p>
           </div>
         </div>

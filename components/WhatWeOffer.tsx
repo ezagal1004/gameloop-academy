@@ -75,7 +75,7 @@ export default function WhatWeOffer() {
                   Live & Interactive
                 </h3>
                 <p className="text-black font-sans text-xs md:text-sm leading-relaxed text-center">
-                  Real-time help via Zoom, not pre-recorded videos
+                  Real-time help via Google Meet, not pre-recorded videos
                 </p>
               </div>
 

@@ -50,7 +50,7 @@ export default function Hero() {
             </p>
 
             <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-md mx-auto lg:mx-0 font-sans">
-              MakeCode Arcade • Ages 10-14 • Live on Zoom
+              MakeCode Arcade • Ages 10-14 • Live on Google Meet
             </p>
 
             <div className="pt-3">
