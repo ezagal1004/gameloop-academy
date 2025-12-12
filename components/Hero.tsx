@@ -1,5 +1,6 @@
 "use client";
 import Image from 'next/image';
+import { motion } from 'motion/react';
 import CTAButton from './CTAButton';
 
 export default function Hero() {
@@ -65,7 +66,10 @@ export default function Hero() {
           {/* Right Column - Image with Robot Overlays */}
           <div className="relative flex justify-center items-center">
             {/* Main Image with Wonky Border */}
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
               className="relative w-full max-w-xl bg-white border-[3px] border-black rotate-2 shadow-2xl z-10"
               style={{
                 borderWidth: '3px 4px 3px 5px',
@@ -87,10 +91,15 @@ export default function Hero() {
                 {/* Overlay for depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Robot 1 - Left side, overlapping the image */}
-            <div className="absolute -left-12 sm:-left-16 md:-left-20 lg:-left-24 -bottom-6 sm:-bottom-8 md:-bottom-12 lg:-bottom-14 z-20 w-32 sm:w-40 md:w-48 lg:w-56">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+              className="absolute -left-12 sm:-left-16 md:-left-20 lg:-left-24 -bottom-6 sm:-bottom-8 md:-bottom-12 lg:-bottom-14 z-20 w-32 sm:w-40 md:w-48 lg:w-56"
+            >
               <Image
                 src="/images/robot.png"
                 alt="Coding robot mascot"
@@ -101,10 +110,15 @@ export default function Hero() {
                   filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4))',
                 }}
               />
-            </div>
+            </motion.div>
 
             {/* Robot 2 - Right side, overlapping the image */}
-            <div className="absolute -right-12 sm:-right-16 md:-right-20 lg:-right-24 -bottom-6 sm:-bottom-8 md:-bottom-12 lg:-bottom-14 z-20 w-32 sm:w-40 md:w-48 lg:w-56">
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+              className="absolute -right-12 sm:-right-16 md:-right-20 lg:-right-24 -bottom-6 sm:-bottom-8 md:-bottom-12 lg:-bottom-14 z-20 w-32 sm:w-40 md:w-48 lg:w-56"
+            >
               <Image
                 src="/images/robot2.png"
                 alt="Coding robot mascot 2"
@@ -115,7 +129,7 @@ export default function Hero() {
                   filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4))',
                 }}
               />
-            </div>
+            </motion.div>
           </div>
 
         </div>
