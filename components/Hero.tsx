@@ -47,11 +47,11 @@ export default function Hero() {
             </h1>
 
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-bold max-w-md mx-auto lg:mx-0 font-sans leading-tight pt-2">
-              Kids build their own video games in live online coding classes
+              Your child builds their own video games in personalized 1-on-1 tutoring sessions
             </p>
 
             <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-md mx-auto lg:mx-0 font-sans">
-              MakeCode Arcade • Ages 10-14 • Live on Google Meet
+              MakeCode Arcade • Ages 7-14 • In-Person & Online
             </p>
 
             <div className="pt-3">

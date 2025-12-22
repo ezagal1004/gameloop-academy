@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-import FloatingChat from "@/components/layout/FloatingChatWindow";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -40,7 +39,6 @@ export default function RootLayout({
       <body
         className={`${dmSans.variable} ${bmHanna.variable} antialiased`}
       >
-        <FloatingChat />
         {children}
       </body>
     </html>
