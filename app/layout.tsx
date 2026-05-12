@@ -1,30 +1,22 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
-import localFont from "next/font/local";
-import "./globals.css";
+import { Fredoka } from "next/font/google";
+import "./globals.css"
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const fredoka = Fredoka({
+  variable: "--font-fredoka",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
-
-const bmHanna = localFont({
-  src: "./fonts/BMHANNAPro.woff2",
-  variable: "--font-bm-hanna",
-  display: "swap",
-  weight: "400",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
   title: "Gameloop Academy - Learn Coding Through Games",
-  description: "Live online coding classes where kids build their own video games using MakeCode Arcade. Ages 10-14.",
+  description: "Live online coding classes where kids build their own video games using MakeCode Arcade. Ages 7-17.",
   openGraph: {
     type: 'website',
     locale: 'en_US',
     title: "Gameloop Academy - Learn Coding Through Games",
-    description: "Live online coding classes where kids build their own video games using MakeCode Arcade. Ages 10-14.",
+    description: "Live online coding classes where kids build their own video games using MakeCode Arcade. Ages 7-17.",
     siteName: "Gameloop Academy",
   },
 };
@@ -37,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${dmSans.variable} ${bmHanna.variable} antialiased`}
+        className={`${fredoka.variable} antialiased`}
       >
         {children}
       </body>

@@ -2,6 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   turbopack: {},
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "i.imgur.com",
+      },
+    ],
+  },
   webpack: (config, { isServer }) => {
     // Exclude problematic mediapipe imports
     config.resolve.alias = {
@@ -18,7 +26,6 @@ const nextConfig: NextConfig = {
         crypto: false,
       };
     }
-
     return config;
   },
 };

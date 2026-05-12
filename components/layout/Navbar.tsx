@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Instagram, Facebook } from 'lucide-react';
 
 export default function Navbar() {
@@ -17,16 +18,15 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           
           {/* Logo */}
-          <Link 
-            href="/" 
-            className="text-2xl md:text-3xl font-bold font-[family-name:var(--font-bm-hanna)] uppercase tracking-tight hover:scale-105 transition-transform"
-            style={{
-              WebkitTextStroke: '2px black',
-              paintOrder: 'stroke fill',
-            }}
-          >
-            <span className="text-[#3B9FD8]">Gameloop</span>
-            <span className="text-[#FDB927]"> Academy</span>
+          <Link href="/" className="hover:scale-105 transition-transform inline-flex items-center">
+            <Image
+              src="https://i.imgur.com/DonXq7X.png"
+              alt="Gameloop Academy"
+              width={180}
+              height={60}
+              className="h-12 w-auto object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Menu */}
@@ -63,7 +63,7 @@ export default function Navbar() {
 
             <button
               onClick={handleMessageClick}
-              className="px-6 py-3 bg-[#FDB927] text-black font-bold text-base rounded-full shadow-[0_4px_0_0_#000] hover:shadow-[0_2px_0_0_#000] active:shadow-[0_1px_0_0_#000] transition-all duration-150 hover:translate-y-1 active:translate-y-2 border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)]"
+              className="px-6 py-3 bg-[#FDB927] text-black font-bold text-base rounded-full shadow-[0_4px_0_0_#000] hover:shadow-[0_2px_0_0_#000] active:shadow-[0_1px_0_0_#000] transition-all duration-150 hover:translate-y-1 active:translate-y-2 border-3 border-black uppercase font-[family-name:var(--font-fredoka)]"
             >
               Message Me
             </button>
@@ -100,7 +100,7 @@ export default function Navbar() {
                 href="https://www.facebook.com/profile.php?id=61585606432549"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-3 bg-[#3B9FD8] text-white font-bold text-sm rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)] text-center flex items-center justify-center gap-2"
+                className="px-4 py-3 bg-[#3B9FD8] text-white font-bold text-sm rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-fredoka)] text-center flex items-center justify-center gap-2"
                 onClick={() => setIsOpen(false)}
               >
                 <Facebook className="w-5 h-5" strokeWidth={2.5} fill="currentColor" />
@@ -110,7 +110,7 @@ export default function Navbar() {
                 href="https://instagram.com/gameloop_academy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-3 bg-[#3B9FD8] text-white font-bold text-sm rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)] text-center flex items-center justify-center gap-2"
+                className="px-4 py-3 bg-[#3B9FD8] text-white font-bold text-sm rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-fredoka)] text-center flex items-center justify-center gap-2"
                 onClick={() => setIsOpen(false)}
               >
                 <Instagram className="w-5 h-5" strokeWidth={2.5} />
@@ -123,7 +123,7 @@ export default function Navbar() {
                 handleMessageClick();
                 setIsOpen(false);
               }}
-              className="px-6 py-3 bg-[#FDB927] text-black font-bold text-base rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-bm-hanna)] text-center"
+              className="px-6 py-3 bg-[#FDB927] text-black font-bold text-base rounded-full shadow-[0_4px_0_0_#000] border-3 border-black uppercase font-[family-name:var(--font-fredoka)] text-center"
             >
               Message Me
             </button>
