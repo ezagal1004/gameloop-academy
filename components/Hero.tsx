@@ -1,205 +1,368 @@
 "use client";
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'motion/react';
-import CTAButton from './CTAButton';
+import gsap from 'gsap';
+import { SplitText } from 'gsap/SplitText';
+
+gsap.registerPlugin(SplitText);
 
 export default function Hero() {
-  return (
-    <section className="relative min-h-screen flex items-center justify-center bg-[#3B9FD8] overflow-hidden pt-20 pb-12">
-      {/* Comic book dots texture */}
-      <div
-        className="absolute inset-0 opacity-30 z-0"
-        style={{
-          backgroundImage: `radial-gradient(circle, rgba(0,0,0,1) 1.5px, transparent 1.5px)`,
-          backgroundSize: '20px 20px',
-        }}
-      ></div>
+  const textRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const robotRef = useRef<HTMLDivElement>(null);
 
-      {/* Animated background elements - subtle dots/sparkles */}
-      <div className="absolute inset-0 opacity-30 z-0">
-        <div className="absolute top-20 left-10 w-3 h-3 bg-white rounded-full animate-pulse" style={{ animationDelay: '0s', animationDuration: '3s' }}></div>
-        <div className="absolute top-40 right-20 w-2 h-2 bg-white rounded-full animate-pulse" style={{ animationDelay: '1s', animationDuration: '4s' }}></div>
-        <div className="absolute bottom-32 left-1/4 w-3 h-3 bg-white rounded-full animate-pulse" style={{ animationDelay: '2s', animationDuration: '3.5s' }}></div>
-        <div className="absolute top-1/2 right-1/3 w-2 h-2 bg-white rounded-full animate-pulse" style={{ animationDelay: '1.5s', animationDuration: '3.5s' }}></div>
-        <div className="absolute bottom-1/4 right-1/4 w-3 h-3 bg-white rounded-full animate-pulse" style={{ animationDelay: '0.5s', animationDuration: '4s' }}></div>
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const [form, setForm] = useState({
+    parentName: '',
+    parentEmail: '',
+    studentName: '',
+    studentAge: '',
+    message: '',
+  });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/trial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      setStatus(res.ok ? 'success' : 'error');
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  // GSAP animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      document.fonts.ready.then(() => {
+        const lines = textRef.current?.querySelectorAll('.hero-line');
+        if (!lines) return;
+
+        lines.forEach((line) => {
+          gsap.set(line, { opacity: 1 });
+          SplitText.create(line, {
+            type: 'words,lines',
+            mask: 'lines',
+            autoSplit: true,
+            onSplit(self) {
+              return gsap.from(self.lines, {
+                yPercent: 110,
+                opacity: 0,
+                duration: 0.7,
+                ease: 'expo.out',
+                stagger: 0.08,
+              });
+            },
+          });
+        });
+
+        gsap.from(formRef.current, {
+          opacity: 0,
+          x: 50,
+          duration: 0.9,
+          ease: 'expo.out',
+          delay: 0.25,
+        });
+
+        gsap.from(robotRef.current, {
+          opacity: 0,
+          y: 40,
+          duration: 0.7,
+          ease: 'back.out(1.4)',
+          delay: 0.6,
+        });
+
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+
+    <section className="relative min-h-screen flex items-center justify-center bg-[#3B9FD8] overflow-hidden py-16 lg:py-12">
+
+      {/* Polka-dot halftone */}
+      <div
+        className="absolute inset-0 z-0 opacity-[0.14]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #000 1.5px, transparent 1.5px)',
+          backgroundSize: '22px 22px',
+        }}
+      />
+
+      {/* Sticky navbar */}
+      <div className={`fixed top-0 left-0 right-0 z-50 pointer-events-none transition-all duration-300 ${scrolled ? 'bg-gradient-to-b from-black/50 to-transparent pb-10' : ''}`}>
+        <div className={`container mx-auto px-6 lg:px-12 max-w-7xl flex items-center justify-between transition-all duration-300 ${scrolled ? 'py-3' : 'pt-5'}`}>
+          <Image
+            src="https://i.imgur.com/DonXq7X.png"
+            alt="Gameloop Academy"
+            width={280}
+            height={90}
+            className="h-12 w-auto pointer-events-auto"
+            priority
+          />
+          <nav className="hidden md:flex items-center gap-8 pointer-events-auto">
+            {[
+              { label: 'Curriculum', href: '#curriculum' },
+              { label: 'Pricing', href: '#pricing' },
+              { label: 'About', href: '#about' },
+            ].map(({ label, href }) => (
+              <a
+                key={label}
+                href={href}
+                className="text-white font-bold font-sans text-xl hover:text-[#FDB927] transition-colors duration-150"
+                style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.2)' }}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-8 items-center max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-7xl mx-auto">
 
-          {/* Left Column - Text Content */}
-          <div className="text-white space-y-4 text-center lg:text-left">
-            <h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-normal leading-[0.85] font-[family-name:var(--font-bm-hanna)] uppercase tracking-tight"
-              style={{
-                WebkitTextStroke: '3px black',
-                paintOrder: 'stroke fill',
-              }}
+          {/* Left: split text */}
+          <div ref={textRef} className="text-center lg:text-left leading-none">
+
+            {/* Robot 1 — peeks up from behind the title */}
+            <div
+              ref={robotRef}
+              className="hidden lg:block pointer-events-none"
+              style={{ width: '210px', height: '132px', overflow: 'hidden', position: 'relative', zIndex: 0 }}
             >
-              From Game{' '}
-              <span className="text-[#FDB927] block">
-                Player
-              </span>
-              {' '}to Game{' '}
-              <span className="text-[#FDB927] block">
-                Creator
-              </span>
-            </h1>
-
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white font-bold max-w-md mx-auto lg:mx-0 font-sans leading-tight pt-2">
-              Your child builds their own video games in personalized 1-on-1 tutoring sessions
-            </p>
-
-            <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-md mx-auto lg:mx-0 font-sans">
-              MakeCode Arcade • Ages 7-14 • In-Person & Online
-            </p>
-
-            <div className="pt-3">
-              <CTAButton />
+              <Image
+                src="https://i.imgur.com/ULNz00V.png"
+                alt="Robot mascot"
+                width={990}
+                height={1168}
+                className="w-full h-auto"
+                style={{ filter: 'drop-shadow(4px 6px 0px rgba(0,0,0,0.3))' }}
+              />
             </div>
 
-            <p className="text-xs sm:text-sm text-white/80 max-w-md mx-auto lg:mx-0 font-sans italic pt-2">
-              Taught by an experienced instructor whose curriculum is used in 500+ coding centers nationwide
-            </p>
+            {/* Text sits in front of robot */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <p
+                className="hero-line opacity-0 text-white font-bold font-sans uppercase text-4xl sm:text-5xl lg:text-6xl"
+                style={{ textShadow: '3px 3px 0px rgba(0,0,0,0.22)' }}
+              >
+                From Game
+              </p>
+              <p
+                className="hero-line opacity-0 text-[#FDB927] font-bold font-sans uppercase text-7xl sm:text-8xl lg:text-9xl"
+                style={{ textShadow: '5px 5px 0px rgba(0,0,0,0.28)', lineHeight: '0.88' }}
+              >
+                Player
+              </p>
+              <p
+                className="hero-line opacity-0 text-white font-bold font-sans uppercase text-4xl sm:text-5xl lg:text-6xl"
+                style={{ textShadow: '3px 3px 0px rgba(0,0,0,0.22)', paddingTop: '6px' }}
+              >
+                to Game
+              </p>
+              <p
+                className="hero-line opacity-0 text-[#FDB927] font-bold font-sans uppercase text-7xl sm:text-8xl lg:text-9xl"
+                style={{ textShadow: '5px 5px 0px rgba(0,0,0,0.28)', lineHeight: '0.88' }}
+              >
+                Creator
+              </p>
+
+              <p className="text-white/90 font-sans font-semibold text-lg sm:text-xl lg:text-2xl mt-5 max-w-sm mx-auto lg:mx-0 leading-snug">
+                Private 1-on-1 coding lessons designed to keep kids engaged, learning, and coming back.
+              </p>
+            </div>
           </div>
 
-          {/* Right Column - Image with Robot Overlays */}
-          <div className="relative flex justify-center items-center">
-            {/* Main Image with Wonky Border */}
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-              className="relative w-full max-w-xl bg-white border-[3px] border-black rotate-2 shadow-2xl z-10"
-              style={{
-                borderWidth: '3px 4px 3px 5px',
-                borderRadius: '95% 4% 92% 5%/4% 95% 6% 95%',
-              }}
-            >
-              {/* Image container */}
+          {/* Right: form + robots */}
+          <div className="flex items-center justify-center">
+            <div ref={formRef} className="relative w-full max-w-lg lg:ml-12">
+
+              {/* Form card */}
               <div
-                className="relative aspect-[4/3] bg-gradient-to-br from-indigo-900 to-purple-900 overflow-hidden -rotate-1"
-                style={{ margin: '12px' }}
+                id="trial-form"
+                className="bg-white w-full relative z-20"
+                style={{
+                  border: '4px solid #000',
+                  borderRadius: '16px',
+                  boxShadow: '8px 8px 0px #000',
+                  padding: 'clamp(16px, 4vw, 28px) clamp(16px, 4vw, 28px) clamp(24px, 5vw, 36px)',
+                }}
               >
-                <Image
-                  src="/images/kids-coding.jpg"
-                  alt="Kids learning to code and create games"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                {/* Overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                {/* Card header */}
+                <div className="mb-5">
+                  <span
+                    className="inline-block bg-[#FDB927] text-black font-bold font-sans text-xs uppercase px-3 py-1 border-2 border-black mb-3"
+                    style={{ borderRadius: '6px', boxShadow: '2px 2px 0px #000' }}
+                  >
+                    🎮 Free 30-Min Discovery Trial
+                  </span>
+                  <h2 className="font-bold font-sans text-black text-2xl leading-tight">
+                    Book your child's first session
+                  </h2>
+                  <p className="text-gray-500 text-sm font-sans mt-1">
+                    See if it's the right fit — no commitment needed.
+                  </p>
+                </div>
+
+                {status === 'success' ? (
+                  <div className="flex flex-col items-center justify-center text-center py-10">
+                    <p className="text-4xl mb-3">🎮</p>
+                    <h3 className="font-bold font-sans text-black text-xl mb-2">We got your info!</h3>
+                    <p className="text-gray-500 font-sans text-sm max-w-xs">
+                      Thanks for reaching out! We'll be in contact with you soon at <strong>{form.parentEmail}</strong>.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block font-bold font-sans text-sm text-black mb-1">
+                          Parent Full Name
+                        </label>
+                        <input
+                          type="text"
+                          name="parentName"
+                          value={form.parentName}
+                          onChange={handleChange}
+                          placeholder="Jane Smith"
+                          required
+                          className="w-full font-sans text-sm bg-white text-black placeholder-gray-400 outline-none px-3 py-2.5"
+                          style={{ border: '3px solid #000', borderRadius: '8px' }}
+                          onFocus={(e) => (e.currentTarget.style.borderColor = '#3B9FD8')}
+                          onBlur={(e) => (e.currentTarget.style.borderColor = '#000')}
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold font-sans text-sm text-black mb-1">
+                          Parent Email
+                        </label>
+                        <input
+                          type="email"
+                          name="parentEmail"
+                          value={form.parentEmail}
+                          onChange={handleChange}
+                          placeholder="jane@email.com"
+                          required
+                          className="w-full font-sans text-sm bg-white text-black placeholder-gray-400 outline-none px-3 py-2.5"
+                          style={{ border: '3px solid #000', borderRadius: '8px' }}
+                          onFocus={(e) => (e.currentTarget.style.borderColor = '#3B9FD8')}
+                          onBlur={(e) => (e.currentTarget.style.borderColor = '#000')}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block font-bold font-sans text-sm text-black mb-1">
+                          Student Full Name
+                        </label>
+                        <input
+                          type="text"
+                          name="studentName"
+                          value={form.studentName}
+                          onChange={handleChange}
+                          placeholder="Alex Smith"
+                          required
+                          className="w-full font-sans text-sm bg-white text-black placeholder-gray-400 outline-none px-3 py-2.5"
+                          style={{ border: '3px solid #000', borderRadius: '8px' }}
+                          onFocus={(e) => (e.currentTarget.style.borderColor = '#3B9FD8')}
+                          onBlur={(e) => (e.currentTarget.style.borderColor = '#000')}
+                        />
+                      </div>
+                      <div>
+                        <label className="block font-bold font-sans text-sm text-black mb-1">
+                          Student Age
+                        </label>
+                        <select
+                          name="studentAge"
+                          value={form.studentAge}
+                          onChange={handleChange}
+                          required
+                          className="w-full font-sans text-sm bg-white text-black outline-none px-3 py-2.5 cursor-pointer"
+                          style={{ border: '3px solid #000', borderRadius: '8px' }}
+                          onFocus={(e) => (e.currentTarget.style.borderColor = '#3B9FD8')}
+                          onBlur={(e) => (e.currentTarget.style.borderColor = '#000')}
+                        >
+                          <option value="" disabled>Select age</option>
+                          {Array.from({ length: 11 }, (_, i) => i + 7).map(age => (
+                            <option key={age} value={age}>{age} years old</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block font-bold font-sans text-sm text-black mb-1">
+                        Anything else I should know?{' '}
+                        <span className="text-gray-400 font-normal">(optional)</span>
+                      </label>
+                      <textarea
+                        rows={3}
+                        name="message"
+                        value={form.message}
+                        onChange={handleChange}
+                        placeholder="Prior coding experience, schedule preferences, questions..."
+                        className="w-full font-sans text-sm bg-white text-black placeholder-gray-400 outline-none px-3 py-2.5 resize-none"
+                        style={{ border: '3px solid #000', borderRadius: '8px' }}
+                        onFocus={(e) => (e.currentTarget.style.borderColor = '#3B9FD8')}
+                        onBlur={(e) => (e.currentTarget.style.borderColor = '#000')}
+                      />
+                    </div>
+
+                    {status === 'error' && (
+                      <p className="text-red-500 font-sans text-sm text-center">
+                        Something went wrong. Please try again or email us directly.
+                      </p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={status === 'loading'}
+                      className="w-full font-bold font-sans text-base uppercase text-black bg-[#FDB927] py-3 transition-all duration-150 hover:translate-y-0.5 active:translate-y-1 disabled:opacity-60 disabled:cursor-not-allowed"
+                      style={{
+                        border: '3px solid #000',
+                        borderRadius: '10px',
+                        boxShadow: '4px 4px 0px #000',
+                      }}
+                      onMouseEnter={(e) => { if (status !== 'loading') e.currentTarget.style.boxShadow = '2px 2px 0px #000'; }}
+                      onMouseLeave={(e) => { if (status !== 'loading') e.currentTarget.style.boxShadow = '4px 4px 0px #000'; }}
+                    >
+                      {status === 'loading' ? 'Sending...' : 'Book My Free Trial →'}
+                    </button>
+
+                  </form>
+                )}
               </div>
-            </motion.div>
 
-            {/* Robot 1 - Left side, overlapping the image */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-              className="absolute -left-12 sm:-left-16 md:-left-20 lg:-left-24 -bottom-6 sm:-bottom-8 md:-bottom-12 lg:-bottom-14 z-20 w-32 sm:w-40 md:w-48 lg:w-56"
-            >
-              <Image
-                src="/images/robot.png"
-                alt="Coding robot mascot"
-                width={990}
-                height={1168}
-                className="w-full h-auto drop-shadow-2xl"
-                style={{
-                  filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4))',
-                }}
-              />
-            </motion.div>
 
-            {/* Robot 2 - Right side, overlapping the image */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
-              className="absolute -right-12 sm:-right-16 md:-right-20 lg:-right-24 -bottom-6 sm:-bottom-8 md:-bottom-12 lg:-bottom-14 z-20 w-32 sm:w-40 md:w-48 lg:w-56"
-            >
-              <Image
-                src="/images/robot2.png"
-                alt="Coding robot mascot 2"
-                width={990}
-                height={1168}
-                className="w-full h-auto drop-shadow-2xl"
-                style={{
-                  filter: 'drop-shadow(0 25px 50px rgba(0, 0, 0, 0.4))',
-                }}
-              />
-            </motion.div>
+            </div>
           </div>
 
         </div>
       </div>
 
-      {/* Animated Wave Divider */}
-      <div className="absolute bottom-0 left-0 w-full h-[60px] z-30">
-        <svg
-          className="w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlnsXlink="http://www.w3.org/1999/xlink"
-          viewBox="0 24 150 28"
-          preserveAspectRatio="none"
-        >
-          <defs>
-            <path
-              id="gentle-wave"
-              d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
-            />
-          </defs>
-          <g className="parallax1">
-            <use xlinkHref="#gentle-wave" x="50" y="3" fill="#FDB927" />
-          </g>
-          <g className="parallax2">
-            <use xlinkHref="#gentle-wave" x="50" y="0" fill="#2B7FB8" />
-          </g>
-          <g className="parallax3">
-            <use xlinkHref="#gentle-wave" x="50" y="9" fill="#1E5A8E" />
-          </g>
-          <g className="parallax4">
-            <use xlinkHref="#gentle-wave" x="50" y="6" fill="#fff" />
-          </g>
-        </svg>
-      </div>
-
-      {/* Wave Animation Styles */}
-      <style jsx>{`
-        .parallax1 > use {
-          animation: move-forever1 10s linear infinite;
-          animation-delay: -2s;
-        }
-        .parallax2 > use {
-          animation: move-forever2 8s linear infinite;
-          animation-delay: -2s;
-        }
-        .parallax3 > use {
-          animation: move-forever3 6s linear infinite;
-          animation-delay: -2s;
-        }
-        .parallax4 > use {
-          animation: move-forever4 4s linear infinite;
-          animation-delay: -2s;
-        }
-        @keyframes move-forever1 {
-          0% { transform: translate(85px, 0%); }
-          100% { transform: translate(-90px, 0%); }
-        }
-        @keyframes move-forever2 {
-          0% { transform: translate(-90px, 0%); }
-          100% { transform: translate(85px, 0%); }
-        }
-        @keyframes move-forever3 {
-          0% { transform: translate(85px, 0%); }
-          100% { transform: translate(-90px, 0%); }
-        }
-        @keyframes move-forever4 {
-          0% { transform: translate(-90px, 0%); }
-          100% { transform: translate(85px, 0%); }
-        }
-      `}</style>
     </section>
   );
+
 }
