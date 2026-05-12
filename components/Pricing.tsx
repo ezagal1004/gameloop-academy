@@ -112,9 +112,9 @@ export default function Pricing() {
             </button>
           </div>
 
-          {/* Robot 1 — left, peeking halfway up */}
-          <div className="hidden lg:block absolute -left-20 z-10 w-36 xl:w-44 pointer-events-none" style={{ top: '50%' }}>
-            <div style={{ transform: 'translateY(-50%) rotate(-12deg)' }}>
+          {/* Robot 1 — left */}
+          <div className="hidden lg:block absolute z-10 w-40 xl:w-48 pointer-events-none" style={{ top: '50%', right: '100%', marginRight: '24px' }}>
+            <div style={{ transform: 'translateY(-50%) rotate(-6deg)' }}>
               <Image
                 src="https://i.imgur.com/ULNz00V.png"
                 alt="Robot mascot"
@@ -126,9 +126,9 @@ export default function Pricing() {
             </div>
           </div>
 
-          {/* Robot 2 — right, peeking halfway up */}
-          <div className="hidden lg:block absolute -right-20 z-10 w-36 xl:w-44 pointer-events-none" style={{ top: '50%' }}>
-            <div style={{ transform: 'translateY(-50%) rotate(12deg)' }}>
+          {/* Robot 2 — right */}
+          <div className="hidden lg:block absolute z-10 w-40 xl:w-48 pointer-events-none" style={{ top: '50%', left: '100%', marginLeft: '24px' }}>
+            <div style={{ transform: 'translateY(-50%) rotate(6deg)' }}>
               <Image
                 src="https://i.imgur.com/FrCURcD.png"
                 alt="Robot mascot 2"
